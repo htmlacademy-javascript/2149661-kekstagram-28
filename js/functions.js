@@ -1,52 +1,35 @@
-//Функция для проверки длины строки
-const srtLengthCheck = (string, lengthCount) => string.length >= lengthCount;
+const srtLengthCheck = (string, length) => string.length <= length;
 
-//Функция для проверки, является ли строка палиндромом.
-function isPalindrom(string) {
-  for (let i = 0, j = string.length - 1; i < j; i++, j--) {
-    if (string.at(i) !== string.at(j)){
-      return false;
+const isPalindrom = (string) => {
+  const tempString = string.toLowerCase().replaceAll(' ','');
+  let reverseString = '';
+  for (let i = tempString.length -1; i >= 0; i--) {
+    reverseString += tempString.at(i);
+  }
+  if (tempString === reverseString) {
+    return 'Palindrom';
+  }
+  return 'Not Palindrom';
+};
+
+const parseNumber = (string) => {
+  if (typeof string === 'number') {
+    string = String(string).replaceAll('.', '').replaceAll('-', '');
+    return Number(string);
+  }
+  let parsedString = '';
+  for (let i = 0; i < string.length; i++) {
+    if (!isNaN(parseInt(string.at(i),10))) {
+      parsedString += string.at(i);
     }
-    return true;
-  }
-}
-
-//Функция, которая принимает строку, извлекает содержащиеся в ней цифры от 0 до 9 и возвращает их в виде целого положительного числа.
-function returnNumber(string){
-  let parse = '';
-  if (!Number.isFinite(string)){
-    for (let i = 0; i <= string.length; i++) {
-      if (!isNaN(string[i])) {
-        parse += string[i];
-      }
-    }parse = parse.replaceAll(' ', '');
-    return parse;
-  }
-  parse = String(string);
-  parse = parse.replaceAll('.', '');
-  parse = +parse;
-  return Math.abs(parse);
-}
-
-/*Функция, которая принимает три параметра:
-- исходную строку,
-- минимальную длину,
-- строку с добавочными символами
-возвращает исходную строку, дополненную указанными символами до заданной длины.
-Символы добавляются в начало строки.
-Если исходная строка превышает заданную длину, она не должна обрезаться.
-Если «добивка» слишком длинная, она обрезается с конца.*/
+  }return parseInt(parsedString, 10);
+};
 
 function autoFill (string, minLength, symbols) {
-  let newString = String('');
-  if (minLength > string.length){
-    for (let i = 0; i < minLength - string.length; i++) {
-      newString += symbols;
-    }
-    if (newString.length >= minLength) {
-      newString = newString.slice(0, minLength - string.length);
-      //minLength - string.length
-    }return newString + string;
+  let newString = minLength - string.length;
+  if (newString <= 0) {
+    return string;
   }
-  return string;
+  return symbols.slice(0, newString % symbols.length) + symbols.repeat(newString / symbols.length) + string;
 }
+
