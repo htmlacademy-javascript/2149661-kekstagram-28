@@ -3,14 +3,6 @@
 
 */
 
-/*Структура каждого объекта должна быть следующей:
-- id – число — идентификатор опубликованной фотографии. Это число от 1 до 25. Идентификаторы не должны повторяться.
-- url – строка — адрес картинки вида photos/{{i}}.jpg, где {{i}} — это число от 1 до 25. Адреса картинок не должны повторяться.
-- description – строка — описание фотографии. Описание придумайте самостоятельно.
-- likes – число — количество лайков, поставленных фотографии. Случайное число от 15 до 200.
-- comments – массив объектов — список комментариев, оставленных другими пользователями к этой фотографии.
-Количество комментариев к каждой фотографии вы определяете на своё усмотрение. Все комментарии генерируются случайным образом.
-*/
 const NAMES = [
   'Иван',
   'Хуан Себастьян',
@@ -83,50 +75,19 @@ const getRandomInteger = (a, b) => {
   return Math.floor(result);
 };
 
-const randomId = getRandomInteger(1, 25);
-const randomPhotoNumber = getRandomInteger(1, 25);
-const randomDescriptionNumber = getRandomInteger (0, 25);
-const randomLikesCount = getRandomInteger (15, 200);
-const randomCommentNumber = getRandomInteger (0, COMMENTS.length - 1);
-//const randomComments = Array.from({length: getRandomInteger(1, 6)}, createPhoto.comments);
-
-// const randomNameIndex = getRandomInteger(0, NAMES.length - 1);
-
-
-const createPhoto = () => ({
-  id: randomId,
-  url: 'photos/' + randomPhotoNumber + '.jpg',
-  description: DESCRIPTION[randomDescriptionNumber],
-  likes:randomLikesCount,
-  comments:Array.from({length: getRandomInteger(1, 6)},)
+const createComment = () => ({
+  id: getRandomInteger(1,25),
+  avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
+  message: getRandomInteger(0, COMMENTS.length - 1),
+  name: NAMES[getRandomInteger(0, NAMES.length - 1)]
 });
 
+const createPhoto = () => ({
+  id:  getRandomInteger(1,25),
+  url: `photos/${getRandomInteger(1, 25)}.jpg`,
+  description: DESCRIPTION[getRandomInteger(0, DESCRIPTION.length - 1)],
+  likes:getRandomInteger (15, 200),
+  comments:Array.from({length: getRandomInteger(0, COMMENTS.length - 1)}, createComment)
+});
 
-console.log(
-  createPhoto()
-);
-
-
-/*Структура каждого коммента
-- id — любое число. Идентификаторы не должны повторяться.
-- avatar – это строка, значение которой формируется по правилу img/avatar-{{случайное число от 1 до 6}}.svg.
-Аватарки подготовлены в директории img.
-- message – Для формирования текста комментария
-
-Всё отлично!
-В целом всё неплохо. Но не всё.
-Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.
-Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.
-Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.
-Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!
-
-
-- name – Имена авторов также должны быть случайными. Набор имён для комментаторов составьте сами.
-
-*/
-
-
-/* const comments = []; */
-
-/*
-const resultArray = []; */
+const photoArchive = Array.from({length: 25}, createPhoto);
