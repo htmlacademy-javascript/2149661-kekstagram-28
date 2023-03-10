@@ -6,7 +6,7 @@ function getRandomInteger (min, max) {
   return Math.floor(result);
 }
 
-function createIdGenerator (min, max) {
+function createIdGeneratorFromRange (min, max) {
   const previousValues = [];
 
   return function () {
@@ -24,4 +24,13 @@ function createIdGenerator (min, max) {
   };
 }
 
-export {getRandomInteger, createIdGenerator};
+function createIdGenerator () {
+  let lastGeneratedId = 0;
+
+  return function () {
+    lastGeneratedId += 1;
+    return lastGeneratedId;
+  };
+}
+
+export {getRandomInteger, createIdGeneratorFromRange, createIdGenerator};

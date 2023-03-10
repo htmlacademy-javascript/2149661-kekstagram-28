@@ -1,4 +1,4 @@
-import {getRandomInteger, createIdGenerator} from './utils.js';
+import {getRandomInteger, createIdGeneratorFromRange, createIdGenerator} from './utils.js';
 
 const NAMES = [
   'Иван',
@@ -65,8 +65,9 @@ const COMMENTS = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
 ];
 
-const getPhotoId = createIdGenerator(1, 25);
-const getCommentId = createIdGenerator(0, (COMMENTS.length - 1) * 25);
+const getPhotoId = createIdGeneratorFromRange(1, 25);
+const getCommentId = createIdGeneratorFromRange(0, (COMMENTS.length - 1) * 25);
+const photoFile = createIdGeneratorFromRange(1, 25);
 
 const createComment = () => ({
   id: getCommentId(),
@@ -77,10 +78,12 @@ const createComment = () => ({
 
 const createPhoto = () => ({
   id: getPhotoId(),
-  url: `photos/${getRandomInteger(1, 25)}.jpg`,
+  url: `photos/${photoFile()}.jpg`,
   description: DESCRIPTION[getRandomInteger(0, DESCRIPTION.length - 1)],
   likes:getRandomInteger (15, 200),
   comments:Array.from({length: getRandomInteger(0, COMMENTS.length - 1)}, createComment)
 });
 
-const photoArchive = Array.from({length: 25}, createPhoto);
+const photoArchive = (count) => Array.from({length: count}, createPhoto);
+
+export {photoArchive};
