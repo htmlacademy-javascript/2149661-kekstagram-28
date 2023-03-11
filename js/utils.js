@@ -24,7 +24,7 @@ function createIdGeneratorFromRange (min, max) {
   };
 }
 
-function createIdGenerator () {
+function counter () {
   let lastGeneratedId = 0;
 
   return function () {
@@ -33,4 +33,4 @@ function createIdGenerator () {
   };
 }
 
-export {getRandomInteger, createIdGeneratorFromRange, createIdGenerator};
+export {getRandomInteger, createIdGeneratorFromRange, counter};

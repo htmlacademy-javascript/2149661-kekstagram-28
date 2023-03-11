@@ -1,4 +1,4 @@
-import {getRandomInteger, createIdGeneratorFromRange, createIdGenerator} from './utils.js';
+import {getRandomInteger, createIdGeneratorFromRange, counter} from './utils.js';
 
 const NAMES = [
   'Иван',
@@ -67,12 +67,12 @@ const COMMENTS = [
 
 const getPhotoId = createIdGeneratorFromRange(1, 25);
 const getCommentId = createIdGeneratorFromRange(0, (COMMENTS.length - 1) * 25);
-const photoFile = createIdGeneratorFromRange(1, 25);
+const photoFile = counter();
 
 const createComment = () => ({
   id: getCommentId(),
   avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
-  message: COMMENTS[getRandomInteger(0, COMMENTS.length - 1)],
+  comment: COMMENTS[getRandomInteger(0, COMMENTS.length - 1)],
   name: NAMES[getRandomInteger(0, NAMES.length - 1)]
 });
 
@@ -84,6 +84,7 @@ const createPhoto = () => ({
   comments:Array.from({length: getRandomInteger(0, COMMENTS.length - 1)}, createComment)
 });
 
-const photoArchive = (count) => Array.from({length: count}, createPhoto);
+const getPictures = (count) => Array.from({length: count}, createPhoto);
 
-export {photoArchive};
+
+export {getPictures};
