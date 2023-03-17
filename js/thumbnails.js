@@ -9,8 +9,6 @@ const createThumbnail = (({url, comments, likes}) => {
   return photoElement;
 });
 
-//pictures.append(picturesFrament);
-
 const renderThumbnails = (pictures) => {
   const picturesFrament = document.createDocumentFragment();
   pictures.forEach((picture) => {

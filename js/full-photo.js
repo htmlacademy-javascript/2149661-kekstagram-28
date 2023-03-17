@@ -1,5 +1,5 @@
 import './thumbnails.js';
-import {picturesData} from './main.js';
+import {picturesDataList} from './data.js';
 
 
 const fullPhotoContainer = document.querySelector('.big-picture__preview');
@@ -32,7 +32,7 @@ const renderComments = (comments) => {
 };
 
 const createFullPhoto = (element) => {
-  const [data] = picturesData.filter((picture) => picture.url === element.getAttribute('src'));
+  const [data] = picturesDataList.filter((picture) => picture.url === element.getAttribute('src'));
   fullPhoto.setAttribute('src', data.url);
   photoDescription.textContent = data.description;
   likesCount.textContent = data.likes;
@@ -40,7 +40,6 @@ const createFullPhoto = (element) => {
   commentsArea.innerHTML = '';
   const comments = data.comments;
   commentsArea.append(renderComments(comments));
-
 };
 
 export {createFullPhoto};

@@ -6,6 +6,10 @@ import {createFullPhoto} from './full-photo.js';
 const userModalElement = document.querySelector('.big-picture');
 const userModalCloseElement = document.querySelector('#picture-cancel');
 const userModalOpenElement = document.querySelector('.pictures');
+const commentsCount = document.querySelector('.social__comment-count');
+const loadMoreComments = document.querySelector('.comments-loader');
+// const fixedBodyScroll = document.body.classList.add('modal-open');
+
 
 const onModalEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -38,10 +42,14 @@ function openModal (evt) {
   userModalElement.classList.remove('hidden');
   document.addEventListener('keydown', onModalEscKeydown);
   userModalCloseElement.addEventListener('click', closeModal);
+  commentsCount.classList.add('hidden');
+  loadMoreComments.classList.add('hidden');
+  document.body.classList.add('modal-open');
 }
 
 function closeModal () {
   userModalElement.classList.add('hidden');
   document.removeEventListener('keydown', onModalEscKeydown);
   document.removeEventListener('click', closeModal);
+  document.body.classList.remove('modal-open');
 }
