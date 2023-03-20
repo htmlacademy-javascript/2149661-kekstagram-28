@@ -8,11 +8,18 @@ const likesCount = fullPhotoContainer.querySelector('.likes-count');
 const photoDescription = fullPhotoContainer.querySelector('.social__caption');
 const commentsCount = fullPhotoContainer.querySelector('.comments-count');
 const commentsArea = fullPhotoContainer.querySelector('.social__comments');
+const commentsCountSohown = document.querySelector('.social__comment-count');
+const loadMoreComment = document.querySelector('.comments-loader');
+const ADD_COMMENTS_COUNT = 5;
 
+let commentsShown = 0;
 
-const renderComments = (comments) => {
-  const commentContent = document.createDocumentFragment();
-  comments.forEach((comment) => {
+const commentContent = document.createDocumentFragment();
+const commentsCreator = (comments) => {
+
+  for (let i = 0; (i < commentsShown) && i < comments.length; i++) {
+    console.log(commentsShown);
+    const comment = comments[i];
     const commentItem = document.createElement('li');
     const commentItemImage = document.createElement('img');
     const commentItemDescription = document.createElement('p');
@@ -27,9 +34,35 @@ const renderComments = (comments) => {
     commentItemDescription.textContent = comment.comment;
     commentItem.append(commentItemDescription);
     commentContent.append(commentItem);
-  });
+    console.log(commentItem);
+  }
   return commentContent;
 };
+
+const renderComments = (comments) => {
+  console.log(comments);
+  console.log(comments.length);
+  commentsShown += ADD_COMMENTS_COUNT;
+  if (commentsShown >= comments.length) {
+    commentsShown = comments.length;
+    loadMoreComment.classList.add('hidden');
+    console.log('IF USED');
+  } else {
+    console.log('ELSE USED');
+    loadMoreComment.classList.remove('hidden');
+    commentsCreator(comments);
+  }
+  loadMoreComment.addEventListener('click', commentsCreator.bind(comments));
+  commentsArea.innerHTML = '';
+  commentsArea.append(commentContent);
+  console.log(commentContent);
+};
+
+
+// const loadMore = () => {
+
+// };
+
 
 const createFullPhoto = (element) => {
   const [data] = picturesDataList.filter((picture) => picture.url === element.getAttribute('src'));
@@ -39,7 +72,7 @@ const createFullPhoto = (element) => {
   commentsCount.textContent = data.comments.length;
   commentsArea.innerHTML = '';
   const comments = data.comments;
-  commentsArea.append(renderComments(comments));
+  renderComments(comments);
 };
 
 export {createFullPhoto};

@@ -6,9 +6,8 @@ import {createFullPhoto} from './full-photo.js';
 const userModalElement = document.querySelector('.big-picture');
 const userModalCloseElement = document.querySelector('#picture-cancel');
 const userModalOpenElement = document.querySelector('.pictures');
-const commentsCount = document.querySelector('.social__comment-count');
-const loadMoreComments = document.querySelector('.comments-loader');
-// const fixedBodyScroll = document.body.classList.add('modal-open');
+// const commentsCount = document.querySelector('.social__comment-count');
+// const loadMoreComments = document.querySelector('.comments-loader');
 
 
 const onModalEscKeydown = (evt) => {
@@ -42,8 +41,6 @@ function openModal (evt) {
   userModalElement.classList.remove('hidden');
   document.addEventListener('keydown', onModalEscKeydown);
   userModalCloseElement.addEventListener('click', closeModal);
-  commentsCount.classList.add('hidden');
-  loadMoreComments.classList.add('hidden');
   document.body.classList.add('modal-open');
 }
 
