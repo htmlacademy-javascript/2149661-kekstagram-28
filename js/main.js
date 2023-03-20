@@ -4,3 +4,4 @@ import './open-modal.js';
 
 
 renderThumbnails(picturesDataList);
+

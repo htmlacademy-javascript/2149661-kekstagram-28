@@ -43,3 +43,4 @@ const createFullPhoto = (element) => {
 };
 
 export {createFullPhoto};
+

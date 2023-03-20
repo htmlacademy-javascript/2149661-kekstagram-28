@@ -53,3 +53,4 @@ function closeModal () {
   document.removeEventListener('click', closeModal);
   document.body.classList.remove('modal-open');
 }
+
