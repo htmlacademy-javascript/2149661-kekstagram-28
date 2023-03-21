@@ -24,7 +24,7 @@ function createIdGeneratorFromRange (min, max) {
   };
 }
 
-function createIdGenerator () {
+function counter () {
   let lastGeneratedId = 0;
 
   return function () {
@@ -33,4 +33,9 @@ function createIdGenerator () {
   };
 }
 
-export {getRandomInteger, createIdGeneratorFromRange, createIdGenerator};
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+const isEnterKey = (evt) => evt.key === 'Enter';
+
+export {getRandomInteger, createIdGeneratorFromRange, counter, isEscapeKey, isEnterKey};
+

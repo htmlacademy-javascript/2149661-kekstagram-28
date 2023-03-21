@@ -1,18 +1,22 @@
-import {photoArchive} from './data.js';
-
-const pictures = document.querySelector('.pictures');
+const pictureContainer = document.querySelector('.pictures');
 const photosTemplate = document.querySelector('#picture').content;
 
-const similarPhotos = photoArchive(25);
-
-const picturesFrament = document.createDocumentFragment();
-
-similarPhotos.forEach(({url, comments, likes}) => {
+const createThumbnail = (({url, comments, likes}) => {
   const photoElement = photosTemplate.cloneNode(true);
   photoElement.querySelector('.picture__img').src = url;
-  photoElement.querySelector('.picture__comments').innerHTML = comments;
+  photoElement.querySelector('.picture__comments').textContent = comments.length;
   photoElement.querySelector('.picture__likes').textContent = likes;
-  picturesFrament.append(photoElement);
+  return photoElement;
 });
 
-pictures.append(picturesFrament);
+const renderThumbnails = (pictures) => {
+  const picturesFrament = document.createDocumentFragment();
+  pictures.forEach((picture) => {
+    const thumbmil = createThumbnail(picture);
+    picturesFrament.append(thumbmil);
+  });
+  pictureContainer.append(picturesFrament);
+};
+
+export {renderThumbnails};
+
