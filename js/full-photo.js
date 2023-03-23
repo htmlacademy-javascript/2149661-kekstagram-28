@@ -61,6 +61,7 @@ const renderComments = (comments) => {
       slicedComments = [...slicedComments, ...getMoreComments(comments, slicedComments, ADD_COMMENTS_COUNT)];
       const additionalComments = commentsCreator(slicedComments);
       commentsArea.replaceChildren(additionalComments);
+      commentsCountSohown.innerHTML = `${slicedComments.length} из <span class="comments-count">${comments.length}</span> комментариев`;
       checkButtonVisiabilty(slicedComments, comments);
     });
   }
@@ -72,10 +73,15 @@ const createFullPhoto = (element) => {
   fullPhoto.setAttribute('src', data.url);
   photoDescription.textContent = data.description;
   likesCount.textContent = data.likes;
-  commentsCount.textContent = data.comments.length;
   commentsArea.innerHTML = '';
+  // commentsCount.textContent = data.comments.length;
   const comments = data.comments;
   renderComments(comments);
+  if (comments.length > ADD_COMMENTS_COUNT) {
+    commentsCountSohown.innerHTML = `${ADD_COMMENTS_COUNT} из <span class="comments-count">${comments.length}</span> комментариев`;
+  } else {
+    commentsCountSohown.innerHTML = `${comments.length} из <span class="comments-count">${comments.length}</span> комментариев`;
+  }
 };
 
 export {createFullPhoto};
