@@ -12,13 +12,9 @@ const commentsCountSohown = document.querySelector('.social__comment-count');
 const loadMoreComment = document.querySelector('.comments-loader');
 const ADD_COMMENTS_COUNT = 5;
 
-let commentsShown = 0;
-
-const commentContent = document.createDocumentFragment();
 const commentsCreator = (comments) => {
-
-  for (let i = 0; (i < commentsShown) && i < comments.length; i++) {
-    console.log(commentsShown);
+  const commentContent = document.createDocumentFragment();
+  for (let i = 0; i < comments.length; i++) {
     const comment = comments[i];
     const commentItem = document.createElement('li');
     const commentItemImage = document.createElement('img');
@@ -34,38 +30,45 @@ const commentsCreator = (comments) => {
     commentItemDescription.textContent = comment.comment;
     commentItem.append(commentItemDescription);
     commentContent.append(commentItem);
-    console.log(commentItem);
   }
   return commentContent;
 };
 
-const renderComments = (comments) => {
-  console.log(comments);
-  console.log(comments.length);
-  commentsShown += ADD_COMMENTS_COUNT;
-  if (commentsShown >= comments.length) {
-    commentsShown = comments.length;
-    loadMoreComment.classList.add('hidden');
-    console.log('IF USED');
-  } else {
-    console.log('ELSE USED');
-    loadMoreComment.classList.remove('hidden');
-    commentsCreator(comments);
+const getMoreComments = (fullComments, sliced, count) => {
+  if(sliced.length > fullComments.length) {
+    return fullComments;
   }
-  loadMoreComment.addEventListener('click', commentsCreator.bind(comments));
-  commentsArea.innerHTML = '';
-  commentsArea.append(commentContent);
-  console.log(commentContent);
+  return fullComments.slice(sliced.length, sliced.length + count);
+};
+
+const checkButtonVisiabilty = (slicedComments, comments) => {
+  switch (true) {
+    case slicedComments.length === comments.length:
+      loadMoreComment.classList.add('hidden');
+      break;
+    default:
+      loadMoreComment.classList.remove('hidden');
+  }
+};
+
+const renderComments = (comments) => {
+  let slicedComments = [...getMoreComments(comments, [], ADD_COMMENTS_COUNT)];
+  const firstComments = commentsCreator(slicedComments);
+  commentsArea.replaceChildren(firstComments);
+  checkButtonVisiabilty(slicedComments, comments);
+  if(loadMoreComment) {
+    loadMoreComment.addEventListener('click', () => {
+      slicedComments = [...slicedComments, ...getMoreComments(comments, slicedComments, ADD_COMMENTS_COUNT)];
+      const additionalComments = commentsCreator(slicedComments);
+      commentsArea.replaceChildren(additionalComments);
+      checkButtonVisiabilty(slicedComments, comments);
+    });
+  }
 };
 
 
-// const loadMore = () => {
-
-// };
-
-
 const createFullPhoto = (element) => {
-  const [data] = picturesDataList.filter((picture) => picture.url === element.getAttribute('src'));
+  const [data] = picturesDataList.filter((picture) => picture.id === +element.dataset.thunailId);
   fullPhoto.setAttribute('src', data.url);
   photoDescription.textContent = data.description;
   likesCount.textContent = data.likes;

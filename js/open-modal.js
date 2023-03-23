@@ -6,8 +6,6 @@ import {createFullPhoto} from './full-photo.js';
 const userModalElement = document.querySelector('.big-picture');
 const userModalCloseElement = document.querySelector('#picture-cancel');
 const userModalOpenElement = document.querySelector('.pictures');
-// const commentsCount = document.querySelector('.social__comment-count');
-// const loadMoreComments = document.querySelector('.comments-loader');
 
 
 const onModalEscKeydown = (evt) => {
@@ -37,6 +35,9 @@ userModalOpenElement.addEventListener('click', (evt) => {
 
 function openModal (evt) {
   const element = evt.target.closest('.picture__img');
+  if (!element) {
+    return;
+  }
   createFullPhoto(element);
   userModalElement.classList.remove('hidden');
   document.addEventListener('keydown', onModalEscKeydown);
@@ -46,7 +47,7 @@ function openModal (evt) {
 
 function closeModal () {
   userModalElement.classList.add('hidden');
-  document.removeEventListener('keydown', onModalEscKeydown);
-  document.removeEventListener('click', closeModal);
+  userModalCloseElement.removeEventListener('keydown', onModalEscKeydown);
+  userModalCloseElement.removeEventListener('click', closeModal);
   document.body.classList.remove('modal-open');
 }
