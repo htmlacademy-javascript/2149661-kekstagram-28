@@ -5,6 +5,7 @@ const hashtagField = document.querySelector('.text__hashtags');
 const commentField = document.querySelector('.text__description');
 const formModalContainer = document.querySelector('.img-upload__overlay');
 const cancelButton = document.querySelector('#upload-cancel');
+const submitButton = document.querySelector('#upload-submit');
 const form = document.querySelector('#upload-select-image');
 const MAX_HASHTAG_COUNT = 5;
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
@@ -36,9 +37,8 @@ form.addEventListener('submit', (evt) => {
 
   const isValid = pristine.validate();
   if (isValid) {
-    // console.log('Can send');
-  } else {
-    // console.log('Can\'t send');
+    form.submit();
+    submitButton.setAttribute('disabled', true);
   }
 });
 
