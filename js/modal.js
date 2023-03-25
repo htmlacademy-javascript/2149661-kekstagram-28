@@ -49,5 +49,3 @@ function closeModal () {
   userModalCloseElement.removeEventListener('click', closeModal);
   document.body.classList.remove('modal-open');
 }
-
-// export {userModalOpenElement, openModal};

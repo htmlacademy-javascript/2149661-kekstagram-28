@@ -94,3 +94,4 @@ const getPictures = (count) => Array.from({length: count}, createPhoto);
 const picturesDataList = getPictures(25);
 
 export {picturesDataList};
+
