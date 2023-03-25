@@ -36,9 +36,9 @@ form.addEventListener('submit', (evt) => {
 
   const isValid = pristine.validate();
   if (isValid) {
-    console.log('Can send');
+    // console.log('Can send');
   } else {
-    console.log('Can\'t send');
+    // console.log('Can\'t send');
   }
 });
 
