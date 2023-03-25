@@ -8,11 +8,14 @@ const likesCount = fullPhotoContainer.querySelector('.likes-count');
 const photoDescription = fullPhotoContainer.querySelector('.social__caption');
 const commentsCount = fullPhotoContainer.querySelector('.comments-count');
 const commentsArea = fullPhotoContainer.querySelector('.social__comments');
+const commentsCountSohown = document.querySelector('.social__comment-count');
+const loadMoreComment = document.querySelector('.comments-loader');
+const ADD_COMMENTS_COUNT = 5;
 
-
-const renderComments = (comments) => {
+const commentsCreator = (comments) => {
   const commentContent = document.createDocumentFragment();
-  comments.forEach((comment) => {
+  for (let i = 0; i < comments.length; i++) {
+    const comment = comments[i];
     const commentItem = document.createElement('li');
     const commentItemImage = document.createElement('img');
     const commentItemDescription = document.createElement('p');
@@ -27,19 +30,58 @@ const renderComments = (comments) => {
     commentItemDescription.textContent = comment.comment;
     commentItem.append(commentItemDescription);
     commentContent.append(commentItem);
-  });
+  }
   return commentContent;
 };
 
+const getMoreComments = (fullComments, sliced, count) => {
+  if(sliced.length > fullComments.length) {
+    return fullComments;
+  }
+  return fullComments.slice(sliced.length, sliced.length + count);
+};
+
+const checkButtonVisiabilty = (slicedComments, comments) => {
+  switch (true) {
+    case slicedComments.length === comments.length:
+      loadMoreComment.classList.add('hidden');
+      break;
+    default:
+      loadMoreComment.classList.remove('hidden');
+  }
+};
+
+const renderComments = (comments) => {
+  let slicedComments = [...getMoreComments(comments, [], ADD_COMMENTS_COUNT)];
+  const firstComments = commentsCreator(slicedComments);
+  commentsArea.replaceChildren(firstComments);
+  checkButtonVisiabilty(slicedComments, comments);
+  if(loadMoreComment) {
+    loadMoreComment.addEventListener('click', () => {
+      slicedComments = [...slicedComments, ...getMoreComments(comments, slicedComments, ADD_COMMENTS_COUNT)];
+      const additionalComments = commentsCreator(slicedComments);
+      commentsArea.replaceChildren(additionalComments);
+      commentsCountSohown.innerHTML = `${slicedComments.length} из <span class="comments-count">${comments.length}</span> комментариев`;
+      checkButtonVisiabilty(slicedComments, comments);
+    });
+  }
+};
+
+
 const createFullPhoto = (element) => {
-  const [data] = picturesDataList.filter((picture) => picture.url === element.getAttribute('src'));
+  const [data] = picturesDataList.filter((picture) => picture.id === +element.dataset.thunailId);
   fullPhoto.setAttribute('src', data.url);
   photoDescription.textContent = data.description;
   likesCount.textContent = data.likes;
-  commentsCount.textContent = data.comments.length;
   commentsArea.innerHTML = '';
+  // commentsCount.textContent = data.comments.length;
   const comments = data.comments;
-  commentsArea.append(renderComments(comments));
+  renderComments(comments);
+  if (comments.length > ADD_COMMENTS_COUNT) {
+    commentsCountSohown.innerHTML = `${ADD_COMMENTS_COUNT} из <span class="comments-count">${comments.length}</span> комментариев`;
+  } else {
+    commentsCountSohown.innerHTML = `${comments.length} из <span class="comments-count">${comments.length}</span> комментариев`;
+  }
 };
 
 export {createFullPhoto};
