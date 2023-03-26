@@ -1,10 +1,13 @@
 import {isEscapeKey} from './utils.js';
+import {resetScale, initScaleControls} from './scale.js';
+import {resetEffects} from './effects.js';
 
 const fileField = document.querySelector('#upload-file');
 const hashtagField = document.querySelector('.text__hashtags');
 const commentField = document.querySelector('.text__description');
 const formModalContainer = document.querySelector('.img-upload__overlay');
 const cancelButton = document.querySelector('#upload-cancel');
+const submitButton = document.querySelector('#upload-submit');
 const form = document.querySelector('#upload-select-image');
 const MAX_HASHTAG_COUNT = 5;
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
@@ -12,7 +15,7 @@ const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
 const ERROR_HASHTAG_TEXT = {
   errorDefault: 'GOT ERROR',
   errorCount:'Ошибка количества ХэшТегов. Максимальное число ХэшТегов должно быть не больше 5',
-  errorUniqueness: 'Ошибка уникальности тегов',
+  errorUniqueness: 'Ошибка уникальности ХэшТегов',
   errorValidSymbols: 'Хештег должен начинаться с \'#\' и иметь хотябы один символ после \'#\' ',
 };
 
@@ -27,7 +30,7 @@ const cancelEscFunction = (element) => {
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
-  erroTextClass: 'img-upload__field-wrapper--error',
+  errorTextClass: 'img-upload__field-wrapper--error',
 });
 
 
@@ -36,15 +39,17 @@ form.addEventListener('submit', (evt) => {
 
   const isValid = pristine.validate();
   if (isValid) {
-    // console.log('Can send');
-  } else {
-    // console.log('Can\'t send');
+    form.submit();
+    submitButton.setAttribute('disabled', true);
   }
 });
 
 const closeForm = () => {
   formModalContainer.classList.add('hidden');
   form.reset();
+  resetScale();
+  initScaleControls(false);
+  resetEffects();
   cancelButton.removeEventListener('click', closeForm);
 };
 
@@ -62,6 +67,7 @@ const openForm = () => {
   document.addEventListener('keydown', onModalEscKeydown);
   cancelEscFunction(hashtagField);
   cancelEscFunction(commentField);
+  initScaleControls(true);
 };
 
 const parseHashTag = (value) => value.trim().split(' ').filter((hashTag) => hashTag.trim().length);
