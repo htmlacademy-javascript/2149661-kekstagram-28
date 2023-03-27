@@ -1,4 +1,3 @@
-import './thumbnails.js';
 import {isEscapeKey, isEnterKey} from './utils.js';
 import {createFullPhoto} from './full-photo.js';
 
@@ -6,7 +5,6 @@ import {createFullPhoto} from './full-photo.js';
 const userModalElement = document.querySelector('.big-picture');
 const userModalCloseElement = document.querySelector('#picture-cancel');
 const userModalOpenElement = document.querySelector('.pictures');
-
 
 const onModalEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -47,8 +45,7 @@ function openModal (evt) {
 
 function closeModal () {
   userModalElement.classList.add('hidden');
-  userModalCloseElement.removeEventListener('keydown', onModalEscKeydown);
+  document.removeEventListener('keydown', onModalEscKeydown);
   userModalCloseElement.removeEventListener('click', closeModal);
   document.body.classList.remove('modal-open');
 }
-

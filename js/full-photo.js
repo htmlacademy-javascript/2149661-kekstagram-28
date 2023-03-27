@@ -6,7 +6,6 @@ const fullPhotoContainer = document.querySelector('.big-picture__preview');
 const fullPhoto = fullPhotoContainer.querySelector('.big-picture__img > img');
 const likesCount = fullPhotoContainer.querySelector('.likes-count');
 const photoDescription = fullPhotoContainer.querySelector('.social__caption');
-const commentsCount = fullPhotoContainer.querySelector('.comments-count');
 const commentsArea = fullPhotoContainer.querySelector('.social__comments');
 const commentsCountSohown = document.querySelector('.social__comment-count');
 const loadMoreComment = document.querySelector('.comments-loader');
@@ -74,7 +73,6 @@ const createFullPhoto = (element) => {
   photoDescription.textContent = data.description;
   likesCount.textContent = data.likes;
   commentsArea.innerHTML = '';
-  // commentsCount.textContent = data.comments.length;
   const comments = data.comments;
   renderComments(comments);
   if (comments.length > ADD_COMMENTS_COUNT) {
