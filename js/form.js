@@ -51,6 +51,7 @@ const closeForm = () => {
   initScaleControls(false);
   resetEffects();
   cancelButton.removeEventListener('click', closeForm);
+  document.body.classList.remove('modal-open');
 };
 
 const onModalEscKeydown = (evt) => {
@@ -68,6 +69,7 @@ const openForm = () => {
   cancelEscFunction(hashtagField);
   cancelEscFunction(commentField);
   initScaleControls(true);
+  document.body.classList.add('modal-open');
 };
 
 const parseHashTag = (value) => value.trim().split(' ').filter((hashTag) => hashTag.trim().length);
