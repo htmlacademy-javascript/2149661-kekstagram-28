@@ -2,6 +2,16 @@ import {isEscapeKey} from './utils.js';
 import {resetScale, initScaleControls} from './scale.js';
 import {resetEffects} from './effects.js';
 
+const ERROR_HASHTAG_TEXT = {
+  errorDefault: 'GOT ERROR',
+  errorCount:'Ошибка количества ХэшТегов. Максимальное число ХэшТегов должно быть не больше 5',
+  errorUniqueness: 'Ошибка уникальности ХэшТегов',
+  errorValidSymbols: 'Хештег должен начинаться с \'#\' и иметь хотябы один символ после \'#\' ',
+};
+const MAX_HASHTAG_COUNT = 5;
+const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
+const sucessFormTemplate = document.querySelector('#success').content;
+const errorFormTemplate = document.querySelector('#error').content;
 const fileField = document.querySelector('#upload-file');
 const hashtagField = document.querySelector('.text__hashtags');
 const commentField = document.querySelector('.text__description');
@@ -9,15 +19,7 @@ const formModalContainer = document.querySelector('.img-upload__overlay');
 const cancelButton = document.querySelector('#upload-cancel');
 const submitButton = document.querySelector('#upload-submit');
 const form = document.querySelector('#upload-select-image');
-const MAX_HASHTAG_COUNT = 5;
-const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
 
-const ERROR_HASHTAG_TEXT = {
-  errorDefault: 'GOT ERROR',
-  errorCount:'Ошибка количества ХэшТегов. Максимальное число ХэшТегов должно быть не больше 5',
-  errorUniqueness: 'Ошибка уникальности ХэшТегов',
-  errorValidSymbols: 'Хештег должен начинаться с \'#\' и иметь хотябы один символ после \'#\' ',
-};
 
 const cancelEscFunction = (element) => {
   if (isEscapeKey) {
@@ -33,16 +35,60 @@ const pristine = new Pristine(form, {
   errorTextClass: 'img-upload__field-wrapper--error',
 });
 
-
-form.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-
-  const isValid = pristine.validate();
-  if (isValid) {
-    form.submit();
-    submitButton.setAttribute('disabled', true);
+const closeMessage = () => {
+  const successMessage = document.querySelector('.success');
+  const errorMessage = document.querySelector('.error');
+  if (successMessage) {
+    successMessage.remove();
   }
-});
+  if (errorMessage) {
+    errorMessage.remove();
+  }
+/*   switch (true) {
+    case (successMessage):
+      successMessage.remove();
+      break;
+    case (errorMessage):
+      errorMessage.remove();
+      break;
+  } */
+};
+
+const onClickEmptyAreaSucessMessage = (evt) => {
+  if (!evt.target.closest('.success__inner')) {
+    closeMessage();
+    document.body.removeEventListener('click', onClickEmptyAreaSucessMessage);
+  }
+};
+
+const showSuccessMessage = () => {
+  const messageTemplate = sucessFormTemplate.cloneNode(true);
+  document.body.append(messageTemplate);
+  const closeButton = document.querySelector('.success__button');
+  closeButton.addEventListener('click', closeMessage);
+  document.body.addEventListener('click', onClickEmptyAreaSucessMessage);
+};
+
+
+const showErrorMesaage = () => {
+  const messageTemplate = errorFormTemplate.cloneNode(true);
+  document.body.append(messageTemplate);
+  const closeButton = document.querySelector('.error__button');
+  closeButton.addEventListener('click', closeMessage);
+};
+
+const setOnFormSubmit = (cb) => {
+  form.addEventListener('submit', async (evt) => {
+    evt.preventDefault();
+
+    const isValid = pristine.validate();
+    if (isValid) {
+      submitButton.setAttribute('disabled', true);
+      await cb(new FormData(form));
+      submitButton.removeAttribute('disabled', true);
+    }
+  });
+};
 
 const closeForm = () => {
   formModalContainer.classList.add('hidden');
@@ -51,13 +97,13 @@ const closeForm = () => {
   initScaleControls(false);
   resetEffects();
   cancelButton.removeEventListener('click', closeForm);
-  document.body.classList.remove('modal-open');
 };
 
 const onModalEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closeForm();
+    closeMessage();
     document.removeEventListener('keydown', onModalEscKeydown);
   }
 };
@@ -131,4 +177,4 @@ pristine.addValidator(
   ERROR_HASHTAG_TEXT.errorUniqueness,
 );
 
-export {fileField, openForm};
+export {fileField, openForm, closeForm, setOnFormSubmit, showErrorMesaage, showSuccessMessage};

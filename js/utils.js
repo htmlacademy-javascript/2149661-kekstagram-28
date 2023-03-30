@@ -58,8 +58,7 @@ const showAlert = (message) => {
   setTimeout(() => {
     alertContainer.remove();
   }, ALERT_SHOW_TIME);
-}
-
+};
 
 export {getRandomInteger, createIdGeneratorFromRange, counter, isEscapeKey, isEnterKey, showAlert};
 
