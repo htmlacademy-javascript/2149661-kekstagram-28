@@ -1,5 +1,3 @@
-import {getRandomInteger} from './utils.js';
-
 const PICTURES_COUNT = 10;
 
 const Sort = {
@@ -13,7 +11,6 @@ let currentSortType = Sort.DEFAULT;
 let pictures = [];
 
 const sortByRandom = () => Math.random() - 0.5;
-/* getRandomInteger(0, pictures.length);*/
 const sortByDiscussed = (pictureOne, pictureTwo) => pictureTwo.comments.length - pictureOne.comments.length;
 
 const getSortedPictures = () => {
