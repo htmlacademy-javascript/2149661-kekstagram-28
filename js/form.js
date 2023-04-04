@@ -5,8 +5,8 @@ import {resetEffects} from './effects.js';
 const ERROR_HASHTAG_TEXT = {
   errorDefault: 'GOT ERROR',
   errorCount:'Ошибка количества ХэшТегов. Максимальное число ХэшТегов должно быть не больше 5',
-  errorUniqueness: 'Ошибка уникальности ХэшТегов',
-  errorValidSymbols: 'Хештег должен начинаться с \'#\' и иметь хотябы один символ после \'#\' ',
+  errorUniqueness: 'Ошибка уникальности ХэшТегов. Каждый #ХэшТег должен быть уникален',
+  errorValidSymbols: 'Хештег должен начинаться с \'#\', не иметь пробелов и иметь хотябы один символ после \'#\' ',
 };
 const MAX_HASHTAG_COUNT = 5;
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
@@ -35,6 +35,22 @@ fileChooser.addEventListener('change', () => {
   }
 });
 
+const addBodyFixedClass = () => {
+  document.body.classList.add('modal-open');
+};
+
+const deleteBodyFixedClass = () => {
+  document.body.classList.remove('modal-open');
+};
+
+const disableSendButton = () => {
+  submitButton.setAttribute('disabled', true);
+};
+
+const enableSendButton = () => {
+  submitButton.removeAttribute('disabled', true);
+};
+
 const cancelEscFunction = (element) => {
   if (isEscapeKey) {
     element.addEventListener('keydown', (evt) => {
@@ -58,6 +74,7 @@ const closeMessage = () => {
   if (errorMessage) {
     errorMessage.remove();
   }
+  deleteBodyFixedClass();
 };
 
 const onClickEmptyAreaSucessMessage = (evt) => {
@@ -67,20 +84,26 @@ const onClickEmptyAreaSucessMessage = (evt) => {
   }
 };
 
+const modalMessageHandlers = () => {
+  document.body.addEventListener('click', onClickEmptyAreaSucessMessage);
+  addBodyFixedClass();
+};
+
 const showSuccessMessage = () => {
   const messageTemplate = sucessFormTemplate.cloneNode(true);
   document.body.append(messageTemplate);
-  const closeButton = document.querySelector('.success__button');
-  closeButton.addEventListener('click', closeMessage);
-  document.body.addEventListener('click', onClickEmptyAreaSucessMessage);
+  const sucessButton = document.querySelector('.success__button');
+  sucessButton.addEventListener('click', closeMessage);
+  modalMessageHandlers();
 };
 
 
 const showErrorMesaage = () => {
   const messageTemplate = errorFormTemplate.cloneNode(true);
   document.body.append(messageTemplate);
-  const closeButton = document.querySelector('.error__button');
-  closeButton.addEventListener('click', closeMessage);
+  const errorButton = document.querySelector('.error__button');
+  errorButton.addEventListener('click', closeMessage);
+  modalMessageHandlers();
 };
 
 const setOnFormSubmit = (cb) => {
@@ -89,9 +112,9 @@ const setOnFormSubmit = (cb) => {
 
     const isValid = pristine.validate();
     if (isValid) {
-      submitButton.setAttribute('disabled', true);
+      disableSendButton();
       await cb(new FormData(form));
-      submitButton.removeAttribute('disabled', true);
+      enableSendButton();
     }
   });
 };
@@ -103,6 +126,7 @@ const closeForm = () => {
   initScaleControls(false);
   resetEffects();
   cancelButton.removeEventListener('click', closeForm);
+  deleteBodyFixedClass();
 };
 
 const onModalEscKeydown = (evt) => {
@@ -111,6 +135,7 @@ const onModalEscKeydown = (evt) => {
     closeForm();
     closeMessage();
     document.removeEventListener('keydown', onModalEscKeydown);
+    deleteBodyFixedClass();
   }
 };
 
@@ -121,7 +146,7 @@ const openForm = () => {
   cancelEscFunction(hashtagField);
   cancelEscFunction(commentField);
   initScaleControls(true);
-  document.body.classList.add('modal-open');
+  addBodyFixedClass();
 };
 
 const parseHashTag = (value) => value.trim().split(' ').filter((hashTag) => hashTag.trim().length);
