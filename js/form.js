@@ -10,6 +10,8 @@ const ERROR_HASHTAG_TEXT = {
 };
 const MAX_HASHTAG_COUNT = 5;
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+
 const sucessFormTemplate = document.querySelector('#success').content;
 const errorFormTemplate = document.querySelector('#error').content;
 const fileField = document.querySelector('#upload-file');
@@ -19,7 +21,19 @@ const formModalContainer = document.querySelector('.img-upload__overlay');
 const cancelButton = document.querySelector('#upload-cancel');
 const submitButton = document.querySelector('#upload-submit');
 const form = document.querySelector('#upload-select-image');
+const fileChooser = document.querySelector('.img-upload__start input[type=file]');
+const preview = document.querySelector('.img-upload__preview img');
 
+fileChooser.addEventListener('change', () => {
+  const file = fileChooser.files[0];
+  const fileName = file.name.toLowerCase();
+
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+  if (matches) {
+    preview.src = URL.createObjectURL(file);
+  }
+});
 
 const cancelEscFunction = (element) => {
   if (isEscapeKey) {
@@ -44,14 +58,6 @@ const closeMessage = () => {
   if (errorMessage) {
     errorMessage.remove();
   }
-/*   switch (true) {
-    case (successMessage):
-      successMessage.remove();
-      break;
-    case (errorMessage):
-      errorMessage.remove();
-      break;
-  } */
 };
 
 const onClickEmptyAreaSucessMessage = (evt) => {
