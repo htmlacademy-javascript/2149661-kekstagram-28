@@ -70,22 +70,22 @@ const closeMessage = () => {
   const errorMessage = document.querySelector('.error');
   if (successMessage) {
     successMessage.remove();
+    deleteBodyFixedClass();
   }
   if (errorMessage) {
     errorMessage.remove();
   }
-  deleteBodyFixedClass();
 };
 
-const onClickEmptyAreaSucessMessage = (evt) => {
-  if (!evt.target.closest('.success__inner')) {
+const onClickEmptyAreaMessage = (evt) => {
+  if (!evt.target.closest('.success__inner') || !evt.target.closest('.error__inner')){
     closeMessage();
-    document.body.removeEventListener('click', onClickEmptyAreaSucessMessage);
+    document.body.removeEventListener('click', onClickEmptyAreaMessage);
   }
 };
 
 const modalMessageHandlers = () => {
-  document.body.addEventListener('click', onClickEmptyAreaSucessMessage);
+  document.body.addEventListener('click', onClickEmptyAreaMessage);
   addBodyFixedClass();
 };
 
@@ -101,6 +101,7 @@ const showSuccessMessage = () => {
 const showErrorMesaage = () => {
   const messageTemplate = errorFormTemplate.cloneNode(true);
   document.body.append(messageTemplate);
+  document.body.addEventListener('click', onClickEmptyAreaMessage);
   const errorButton = document.querySelector('.error__button');
   errorButton.addEventListener('click', closeMessage);
   modalMessageHandlers();
