@@ -77,34 +77,51 @@ const closeMessage = () => {
   }
 };
 
-const onClickEmptyAreaMessage = (evt) => {
+/* const onClickEmptyAreaMessage = (evt) => {
   if (!evt.target.closest('.success__inner') || !evt.target.closest('.error__inner')){
     closeMessage();
     document.body.removeEventListener('click', onClickEmptyAreaMessage);
   }
+}; */
+
+const onClickOutsideSucessMessage = (evt) => {
+  if (!evt.target.closest('.success_inner')){
+    // closeMessage();
+    console.log(evt);
+    document.removeEventListener('click', onClickOutsideSucessMessage);
+  }
 };
 
-const modalMessageHandlers = () => {
-  document.body.addEventListener('click', onClickEmptyAreaMessage);
-  addBodyFixedClass();
+const onClickOutsideErrorMessage = (evt) => {
+  if (!evt.target.closest('.error_inner')){
+    // closeMessage();
+    console.log(evt);
+    document.removeEventListener('click', onClickOutsideErrorMessage);
+  }
 };
+
+// const modalMessageHandlers = () => {
+//   document.body.addEventListener('click', onClickEmptyAreaMessage);
+//   addBodyFixedClass();
+// };
 
 const showSuccessMessage = () => {
   const messageTemplate = sucessFormTemplate.cloneNode(true);
   document.body.append(messageTemplate);
   const sucessButton = document.querySelector('.success__button');
   sucessButton.addEventListener('click', closeMessage);
-  modalMessageHandlers();
+  document.body.addEventListener('click', onClickOutsideSucessMessage);
+  addBodyFixedClass();
 };
 
 
 const showErrorMesaage = () => {
   const messageTemplate = errorFormTemplate.cloneNode(true);
   document.body.append(messageTemplate);
-  document.body.addEventListener('click', onClickEmptyAreaMessage);
+  document.body.addEventListener('click', onClickOutsideErrorMessage);
   const errorButton = document.querySelector('.error__button');
   errorButton.addEventListener('click', closeMessage);
-  modalMessageHandlers();
+  addBodyFixedClass();
 };
 
 const setOnFormSubmit = (cb) => {
