@@ -1,10 +1,10 @@
-const ADD_COMMENTS_COUNT = 5;
+const ADDITIONAL_COMMENTS_COUNT = 5;
 const fullPhotoContainer = document.querySelector('.big-picture__preview');
 const commentsArea = fullPhotoContainer.querySelector('.social__comments');
 const commentsCountSohown = document.querySelector('.social__comment-count');
 const loadMoreComment = document.querySelector('.comments-loader');
 
-const commentsCreator = (comments) => {
+const createComments = (comments) => {
   const commentContent = document.createDocumentFragment();
   for (let i = 0; i < comments.length; i++) {
     const comment = comments[i];
@@ -44,14 +44,14 @@ const checkButtonVisiabilty = (slicedComments, comments) => {
 };
 
 const renderComments = (comments) => {
-  let slicedComments = [...getMoreComments(comments, [], ADD_COMMENTS_COUNT)];
-  const firstComments = commentsCreator(slicedComments);
+  let slicedComments = [...getMoreComments(comments, [], ADDITIONAL_COMMENTS_COUNT)];
+  const firstComments = createComments(slicedComments);
   commentsArea.replaceChildren(firstComments);
   checkButtonVisiabilty(slicedComments, comments);
   if(loadMoreComment) {
     loadMoreComment.addEventListener('click', () => {
-      slicedComments = [...slicedComments, ...getMoreComments(comments, slicedComments, ADD_COMMENTS_COUNT)];
-      const additionalComments = commentsCreator(slicedComments);
+      slicedComments = [...slicedComments, ...getMoreComments(comments, slicedComments, ADDITIONAL_COMMENTS_COUNT)];
+      const additionalComments = createComments(slicedComments);
       commentsArea.replaceChildren(additionalComments);
       commentsCountSohown.innerHTML = `${slicedComments.length} из <span class="comments-count">${comments.length}</span> комментариев`;
       checkButtonVisiabilty(slicedComments, comments);
@@ -59,5 +59,5 @@ const renderComments = (comments) => {
   }
 };
 
-export {renderComments, ADD_COMMENTS_COUNT};
+export {renderComments, ADDITIONAL_COMMENTS_COUNT};
 

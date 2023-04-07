@@ -14,7 +14,6 @@ const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 const sucessFormTemplate = document.querySelector('#success').content;
 const errorFormTemplate = document.querySelector('#error').content;
-const fileField = document.querySelector('#upload-file');
 const hashtagField = document.querySelector('.text__hashtags');
 const commentField = document.querySelector('.text__description');
 const formModalContainer = document.querySelector('.img-upload__overlay');
@@ -23,6 +22,7 @@ const submitButton = document.querySelector('#upload-submit');
 const form = document.querySelector('#upload-select-image');
 const fileChooser = document.querySelector('.img-upload__start input[type=file]');
 const preview = document.querySelector('.img-upload__preview img');
+const phonoUploadButton = document.querySelector('#upload-file');
 
 fileChooser.addEventListener('change', () => {
   const file = fileChooser.files[0];
@@ -80,34 +80,15 @@ const closeMessage = () => {
 const onClickOutsideSucessMessage = (evt) => {
   if (!evt.target.closest('.success__inner')){
     closeMessage();
-    document.removeEventListener('click', onClickOutsideSucessMessage);
+    document.body.removeEventListener('click', onClickOutsideSucessMessage);
   }
 };
 
 const onClickOutsideErrorMessage = (evt) => {
   if (!evt.target.closest('.error__inner')){
     closeMessage();
-    document.removeEventListener('click', onClickOutsideErrorMessage);
+    document.body.removeEventListener('click', onClickOutsideErrorMessage);
   }
-};
-
-const showSuccessMessage = () => {
-  const messageTemplate = sucessFormTemplate.cloneNode(true);
-  document.body.append(messageTemplate);
-  const sucessButton = document.querySelector('.success__button');
-  sucessButton.addEventListener('click', closeMessage);
-  document.body.addEventListener('click', onClickOutsideSucessMessage);
-  addBodyFixedClass();
-};
-
-
-const showErrorMesaage = () => {
-  const messageTemplate = errorFormTemplate.cloneNode(true);
-  document.body.append(messageTemplate);
-  document.body.addEventListener('click', onClickOutsideErrorMessage);
-  const errorButton = document.querySelector('.error__button');
-  errorButton.addEventListener('click', closeMessage);
-  addBodyFixedClass();
 };
 
 const setOnFormSubmit = (cb) => {
@@ -136,16 +117,45 @@ const closeForm = () => {
 const onModalEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    if (document.querySelector('.error__inner').classList.contains('error__inner')){
-      closeMessage();
-    } else {
-      closeMessage();
-      deleteBodyFixedClass();
-      closeForm();
-      document.removeEventListener('keydown', onModalEscKeydown);
-    }
+    deleteBodyFixedClass();
+    closeForm();
+    document.removeEventListener('keydown', onModalEscKeydown);
   }
 };
+
+const onMessageEscKeydown = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    closeMessage();
+    deleteBodyFixedClass();
+    document.removeEventListener('keydown', onMessageEscKeydown);
+    document.addEventListener('keydown', onModalEscKeydown);
+  }
+};
+
+const showSuccessMessage = () => {
+  const messageTemplate = sucessFormTemplate.cloneNode(true);
+  document.body.append(messageTemplate);
+  const sucessButton = document.querySelector('.success__button');
+  sucessButton.addEventListener('click', closeMessage);
+  document.body.addEventListener('click', onClickOutsideSucessMessage);
+  document.removeEventListener('keydown', onModalEscKeydown);
+  document.addEventListener('keydown', onMessageEscKeydown);
+  addBodyFixedClass();
+};
+
+
+const showErrorMesaage = () => {
+  const messageTemplate = errorFormTemplate.cloneNode(true);
+  document.body.append(messageTemplate);
+  document.body.addEventListener('click', onClickOutsideErrorMessage);
+  const errorButton = document.querySelector('.error__button');
+  errorButton.addEventListener('click', closeMessage);
+  document.removeEventListener('keydown', onModalEscKeydown);
+  document.addEventListener('keydown', onMessageEscKeydown);
+  addBodyFixedClass();
+};
+
 
 const openForm = () => {
   formModalContainer.classList.remove('hidden');
@@ -216,4 +226,9 @@ pristine.addValidator(
   ERROR_HASHTAG_TEXT.errorUniqueness,
 );
 
-export {fileField, openForm, closeForm, setOnFormSubmit, showErrorMesaage, showSuccessMessage};
+const onClickUploadPoto = () => {
+  phonoUploadButton.addEventListener('change', openForm);
+};
+
+
+export {onClickUploadPoto, closeForm, setOnFormSubmit, showErrorMesaage, showSuccessMessage};
