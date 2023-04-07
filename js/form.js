@@ -77,33 +77,19 @@ const closeMessage = () => {
   }
 };
 
-/* const onClickEmptyAreaMessage = (evt) => {
-  if (!evt.target.closest('.success__inner') || !evt.target.closest('.error__inner')){
-    closeMessage();
-    document.body.removeEventListener('click', onClickEmptyAreaMessage);
-  }
-}; */
-
 const onClickOutsideSucessMessage = (evt) => {
-  if (!evt.target.closest('.success_inner')){
-    // closeMessage();
-    console.log(evt);
+  if (!evt.target.closest('.success__inner')){
+    closeMessage();
     document.removeEventListener('click', onClickOutsideSucessMessage);
   }
 };
 
 const onClickOutsideErrorMessage = (evt) => {
-  if (!evt.target.closest('.error_inner')){
-    // closeMessage();
-    console.log(evt);
+  if (!evt.target.closest('.error__inner')){
+    closeMessage();
     document.removeEventListener('click', onClickOutsideErrorMessage);
   }
 };
-
-// const modalMessageHandlers = () => {
-//   document.body.addEventListener('click', onClickEmptyAreaMessage);
-//   addBodyFixedClass();
-// };
 
 const showSuccessMessage = () => {
   const messageTemplate = sucessFormTemplate.cloneNode(true);
@@ -150,10 +136,14 @@ const closeForm = () => {
 const onModalEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    closeForm();
-    closeMessage();
-    document.removeEventListener('keydown', onModalEscKeydown);
-    deleteBodyFixedClass();
+    if (document.querySelector('.error__inner').classList.contains('error__inner')){
+      closeMessage();
+    } else {
+      closeMessage();
+      deleteBodyFixedClass();
+      closeForm();
+      document.removeEventListener('keydown', onModalEscKeydown);
+    }
   }
 };
 
