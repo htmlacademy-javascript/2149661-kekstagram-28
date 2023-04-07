@@ -1,5 +1,5 @@
 import {commentsData} from './thumbnails.js';
-import {renderComments, ADD_COMMENTS_COUNT} from './comments.js';
+import {renderComments, ADDITIONAL_COMMENTS_COUNT} from './comments.js';
 
 const fullPhotoContainer = document.querySelector('.big-picture__preview');
 const fullPhoto = fullPhotoContainer.querySelector('.big-picture__img > img');
@@ -16,8 +16,8 @@ const createFullPhoto = (element) => {
   commentsArea.innerHTML = '';
   const comments = data.comments;
   renderComments(comments);
-  if (comments.length > ADD_COMMENTS_COUNT) {
-    commentsCountSohown.innerHTML = `${ADD_COMMENTS_COUNT} из <span class="comments-count">${comments.length}</span> комментариев`;
+  if (comments.length > ADDITIONAL_COMMENTS_COUNT) {
+    commentsCountSohown.innerHTML = `${ADDITIONAL_COMMENTS_COUNT} из <span class="comments-count">${comments.length}</span> комментариев`;
   } else {
     commentsCountSohown.innerHTML = `${comments.length} из <span class="comments-count">${comments.length}</span> комментариев`;
   }

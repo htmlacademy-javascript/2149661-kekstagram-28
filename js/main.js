@@ -1,12 +1,11 @@
 import {renderThumbnails} from './thumbnails.js';
-import {fileField, openForm, closeForm, setOnFormSubmit, showErrorMesaage, showSuccessMessage} from './form.js';
+import {onClickUploadPoto, closeForm, setOnFormSubmit, showErrorMesaage, showSuccessMessage} from './form.js';
 import {getData, sendData} from './api.js';
 import {showAlert, debounce} from './utils.js';
 import {sortInit} from './sort.js';
-import './modal.js';
+import {openModalListeners} from './modal.js';
 
-
-fileField.addEventListener('change', openForm);
+onClickUploadPoto();
 
 setOnFormSubmit(async (data) => {
   try {
@@ -28,3 +27,5 @@ try {
 } catch (err) {
   showAlert(err.message);
 }
+
+openModalListeners();

@@ -13,23 +13,23 @@ const onModalEscKeydown = (evt) => {
   }
 };
 
-
-userModalOpenElement.addEventListener('keydown', (evt) => {
-  if (isEnterKey(evt)) {
-    evt.preventDefault();
-    openModal(evt);
-  }
-});
-
 userModalCloseElement.addEventListener('keydown', (evt) => {
   if (isEnterKey(evt)) {
     closeModal();
   }
 });
 
-userModalOpenElement.addEventListener('click', (evt) => {
-  openModal(evt);
-});
+const openModalListeners = () => {
+  userModalOpenElement.addEventListener('keydown', (evt) => {
+    if (isEnterKey(evt)) {
+      evt.preventDefault();
+      openModal(evt);
+    }
+  });
+  userModalOpenElement.addEventListener('click', (evt) => {
+    openModal(evt);
+  });
+};
 
 function openModal (evt) {
   const element = evt.target.closest('.picture__img');
@@ -49,3 +49,5 @@ function closeModal () {
   userModalCloseElement.removeEventListener('click', closeModal);
   document.body.classList.remove('modal-open');
 }
+
+export {openModalListeners};
