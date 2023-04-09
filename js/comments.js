@@ -6,8 +6,7 @@ const loadMoreComment = document.querySelector('.comments-loader');
 
 const createComments = (comments) => {
   const commentContent = document.createDocumentFragment();
-  for (let i = 0; i < comments.length; i++) {
-    const comment = comments[i];
+  comments.forEach((comment) => {
     const commentItem = document.createElement('li');
     const commentItemImage = document.createElement('img');
     const commentItemDescription = document.createElement('p');
@@ -22,7 +21,7 @@ const createComments = (comments) => {
     commentItemDescription.textContent = comment.message;
     commentItem.append(commentItemDescription);
     commentContent.append(commentItem);
-  }
+  });
   return commentContent;
 };
 
