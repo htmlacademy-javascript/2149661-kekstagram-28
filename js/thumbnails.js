@@ -17,11 +17,11 @@ const renderThumbnails = (pictures) => {
   const picturesContainer = pictureContainer.querySelectorAll('.picture');
   picturesContainer.forEach((element) => element.remove());
   const picturesFrament = document.createDocumentFragment();
-  pictures.slice().forEach((picture) => {
-    const thumbmil = createThumbnail(picture);
-    picturesFrament.append(thumbmil);
-    commentsData = pictures;
+  pictures.forEach((picture) => {
+    const thumbnail = createThumbnail(picture);
+    picturesFrament.append(thumbnail);
   });
+  commentsData = pictures;
   pictureContainer.append(picturesFrament);
 };
 

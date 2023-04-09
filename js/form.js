@@ -212,18 +212,24 @@ pristine.addValidator(
   hashtagField,
   validateErrorCount,
   ERROR_HASHTAG_TEXT.errorCount,
+  1,
+  true,
 );
 
 pristine.addValidator(
   hashtagField,
   validateSymbols,
-  ERROR_HASHTAG_TEXT.errorValidSymbols
+  ERROR_HASHTAG_TEXT.errorValidSymbols,
+  2,
+  true,
 );
 
 pristine.addValidator(
   hashtagField,
   validateUnicue,
   ERROR_HASHTAG_TEXT.errorUniqueness,
+  3,
+  true,
 );
 
 const onClickUploadPoto = () => {
